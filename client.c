@@ -28,6 +28,7 @@ int main( int argc, const char* argv[] )
 	Process2_Addr = createSockAddr(argv[1], port);
 	printf("Port: %d\n", port);
 	//create all connections
+	//also do an initial write (have to do this to get all the connections to work...)
 	printf("Control connection\n");
 	controlSocket = createClientSocket(ControlAddr);
 	sprintf(buffer, "Control socket write");
