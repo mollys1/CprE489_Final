@@ -57,7 +57,7 @@ int main( int argc, const char* argv[] )
 		if (cpid == 0)
 		{
 			char buf[40];
-			//server sockets should read from tcp socket and write to pipe for parent
+			//each child should read from tcp socket and write to pipe for parent
 			n = read(dataSockets[i], buf, BUFFER_SIZE);
 			checkError(n, "Error on read");
 			close(pipefd[i][0]);

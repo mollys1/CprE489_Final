@@ -4,6 +4,9 @@
 #include <string.h>
 #include "tests.h"
 
+#define TOTAL_BYTES 992
+#define BYTES_PER_PACKET 4
+
 int main( int argc, const char* argv[] )
 {
 	int bufferSize = 40, err = 0, n = 0;
@@ -11,6 +14,7 @@ int main( int argc, const char* argv[] )
 	struct sockaddr_in ControlAddr, Process0_Addr, Process1_Addr, Process2_Addr;
 	int controlSocket, process0Socket, process1Socket, process2Socket;
 	int processSockets[3];
+	char* generatedBytes = generateBytes();
 	if (argc < 3)
 	{
 		printf("Please specify the IP address of the server and a port number\n");
@@ -73,32 +77,41 @@ int main( int argc, const char* argv[] )
 		checkError(cpid, "Error on fork");
 		if (cpid == 0)
 		{
-			close(pipefd[i][1]);
+			//read from pipe
 			read(pipefd[i][0], buf, 40);
 			//write to TCP socket
 			err = write(processSockets[i], buf, strlen(buffer));
 			sprintf(errorString, "Process %d socket error on write", i);
 			checkError(err, errorString);
-			close(pipefd[i][0]);
 			exit(0);
 		}
 	}
 	char* hello = (char *) malloc(40);
-	for (i = 0; i < 3; i++)
+	int dataSeqNum = 0;
+	for (dataSeqNum = 0; dataSeqNum < (TOTAL_BYTES/BYTES_PER_PACKET);)
 	{
-		close(pipefd[i][0]);
-		sprintf(hello, "Hello, child process %d", i);
-		write(pipefd[i][1], hello, strlen(hello));
-		close(pipefd[i][1]);
+		for (i = 0; i < 3 && dataSeqNum < (TOTAL_BYTES/BYTES_PER_PACKET); i++)
+		{
+			//write data segment to pipe
+			sprintf(hello, "Hello, child process %d", i);
+			write(pipefd[i][1], hello, strlen(hello));
+			dataSeqNum++;
+		}
 	}
-	wait(NULL);
+	
+
 
 	
+	wait(NULL);
+	//close pipes
+	close(pipefd[0]);
+	close(pipefd[1]);
+	close(pipefd[2]);
 	
-		//close all sockets
+	//close all sockets
 	close(controlSocket);
-	close(process0Socket);
-	close(process1Socket);
-	close(process2Socket);
+	close(processSockets[0]);
+	close(processSockets[1]);
+	close(processSockets[2]);
 	return 0;
 }
