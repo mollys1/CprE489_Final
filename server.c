@@ -30,20 +30,23 @@ int main( int argc, const char* argv[] )
 	socket2 = createServerSocket(Process2_Addr);
 	//set up sockets
 	//read from sockets
-	n = read(controlSocket, controlBuff, BUFFER_SIZE);	
-	checkError(n, "Error on read");
-	n = read(socket0, buff0, BUFFER_SIZE);
-	checkError(n, "Error on read");
-	n = read(socket1, buff1, BUFFER_SIZE);
-	checkError(n, "Error on read");
-	n = read(socket2, buff2, BUFFER_SIZE);
-	checkError(n, "Error on read");
-	//print buffer
-	printf("Control: %s\n", controlBuff);
-	printf("0: %s\n", buff0);	
-	printf("1: %s\n", buff1);	
-	printf("2: %s\n", buff2);
-	
+	int i = 0;
+	for (i = 0; i < 2; i++)
+	{
+		n = read(controlSocket, controlBuff, BUFFER_SIZE);	
+		checkError(n, "Error on read");
+		n = read(socket0, buff0, BUFFER_SIZE);
+		checkError(n, "Error on read");
+		n = read(socket1, buff1, BUFFER_SIZE);
+		checkError(n, "Error on read");
+		n = read(socket2, buff2, BUFFER_SIZE);
+		checkError(n, "Error on read");
+		//print buffer
+		printf("Control: %s\n", controlBuff);
+		printf("0: %s\n", buff0);	
+		printf("1: %s\n", buff1);	
+		printf("2: %s\n", buff2);
+	}
 	//close sockets
 	close(controlSocket);
 	close(socket0);	

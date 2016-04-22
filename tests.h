@@ -54,11 +54,11 @@ int testForks()
 
 int testForks2()
 {
-	int pipefd[4][2];
+	int pipefd[3][2];
 	pid_t cpid;
 	
 	int i = 0;	
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < 3; i++)
 	{
 		checkError(pipe(pipefd[i]), "Error creating pipe");
 		cpid = fork();
@@ -84,7 +84,7 @@ int testForks2()
 		}
 	}
 	char* hello = (char *) malloc(40);
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < 3; i++)
 	{
 		close(pipefd[i][0]);
 		sprintf(hello, "Hello, child process %d", i);
