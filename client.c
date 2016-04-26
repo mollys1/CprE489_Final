@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include "tests.h"
+#include "utils.h"
 
 #define TOTAL_BYTES 992
 #define BYTES_PER_PACKET 4
