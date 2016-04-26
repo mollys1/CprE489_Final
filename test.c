@@ -6,13 +6,8 @@
 
 int main( int argc, const char* argv[] )
 {
-	char* generatedBytes = generateBytes();
-	char* segment = (char *) malloc(5);
-	int i = 0;
-	for (i = 0; i < 40; i=i+4)
-	{
-		strncpy(segment, generatedBytes + i, 4);
-		printf("Segment %d: %s\n", i, segment);
-	}
-	printf("%s\n", generatedBytes);
+	int answer = 0, junk1 = 0, junk2 = 0;
+	char* string = "Banana is 12, 13, 14";
+	sscanf(string, "Banana is %d, %d, %d", &answer, &junk1, &junk2);
+	printf("Result %d\n", answer);
 }

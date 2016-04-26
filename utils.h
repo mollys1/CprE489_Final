@@ -64,3 +64,20 @@ int createServerSocket(struct sockaddr_in sockAddr)
 	checkError(s, "Error on accept");
 	return s;
 }
+
+int countDigits(int n)
+{
+	if (n < 10) return 1;
+	if (n < 100) return 2;
+	if (n < 1000) return 3;
+}
+
+int lengthDSS(int nextSeqNum)
+{
+	int length = strlen("Data Seq Num: ") + strlen(", Subflow Seq Num: ") + strlen(", Flow: ");
+	length += countDigits(nextSeqNum);
+	length += countDigits(nextSeqNum/3);
+	length += 1;
+	return length;
+}
+
